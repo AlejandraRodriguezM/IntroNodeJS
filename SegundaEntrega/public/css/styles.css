@@ -1,0 +1,12 @@
+.container_pages{
+    height: 100%;
+}
+
+body {
+    height: 100vh;
+}
+
+
+input[type="number"] {
+    width: 100%;
+}
