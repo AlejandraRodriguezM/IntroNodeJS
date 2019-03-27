@@ -2,10 +2,9 @@ const fs=require('fs');
 listaCursos=[]
 
 
-
 const listarCursos=()=>{
     try{
-        listaCursos=require('./listadoCursos.json')
+        listaCursos=require('../listadoCursos.json')
     }catch(error){
         listaCursos=[]
     }
@@ -13,14 +12,16 @@ const listarCursos=()=>{
 }
 
 const crearCurso=(curso)=>{
-    let flagCursoCreated;
+    let flagCursoCreated=false;
     listarCursos();
+    
     let cursoDuplicado=listaCursos.find(cur=>cur.id==curso.id)
+  
     if(!cursoDuplicado){
         listaCursos.push(curso);
         guardarCurso();
-    }else{
-        flagCursoCreated=false;
+        flagCursoCreated=true;
+        
     }
 
     return flagCursoCreated
@@ -34,9 +35,22 @@ const guardarCurso=()=>{
     })
 }
 
+//para listar cursos solo con estado=disponible para los interesados
+const listarCursosDisponibles=()=>{
+    listarCursos()
+    let cursosDisponibles=listaCursos.filter(cur=>cur.estado=='disponible');
+    console.log(cursosDisponibles)
+    if(!cursosDisponibles){
+        console.log('No hay cursos disponibles')
+    }
+    
+    return cursosDisponibles
+}
+
 module.exports={
     listarCursos,
     crearCurso,
     guardarCurso,
-    flagCursoCreated
+    listaCursos,
+    listarCursosDisponibles
 }

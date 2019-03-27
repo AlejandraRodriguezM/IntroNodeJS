@@ -8,6 +8,22 @@
         <!-- Nested Row within Card Body -->
         <div class="row justify-content-center">
           
+
+         {{#unless flag_crearcurso}}
+                <div class="container p-4">
+                    <div class="row">
+                        <div class="col-md-4 mx-auto">
+                          <div class="alert alert-danger" role="alert">
+                               Ya existe un curso con este id
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          {{/unless}}
+
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
@@ -18,7 +34,7 @@
 
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="number" class="form-control form-control-user" id="Idcurso" name='Idcurso' placeholder="Id del curso" required>
+                    <input type="number" min="1" class="form-control form-control-user" id="Idcurso" name='Idcurso' placeholder="Id del curso" required>
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" id="Nombrecurso" name="Nombrecurso" placeholder="Nombre del curso" required>
@@ -31,13 +47,13 @@
                     
                     <select class="form-control form-control-user" name="Modalidad" id="Modalidad" >
                         <option disabled selected>Selecciona una modalidad</option>
-                        <option value="virtual">Virtual</option>
-                        <option value="presencial">Presencial</option>
+                        <option value="Virtual">Virtual</option>
+                        <option value="Presencial">Presencial</option>
                     </select>
                   </div> 
                     
                   <div class="col-sm-6">
-                    <input type="number" class="form-control form-control-user" id="Valor"  name='Valor' placeholder="Valor" required>
+                    <input type="number" min="0" class="form-control form-control-user" id="Valor"  name='Valor' placeholder="Valor" required>
                   </div>    
                 </div> 
 
@@ -47,7 +63,7 @@
                     <textarea rows="4"  class="form-control form-control-user" id="Descripcion" name="Descripcion" placeholder="Escriba una descripción del curso" required></textarea>
                   </div>
                   <div class="col-sm-6">
-                    <input type="number" class="form-control form-control-user" id="Intensidad" name="Intensidad" placeholder="Intensidad horaria">
+                    <input type="number" min="1" class="form-control form-control-user" id="Intensidad" name="Intensidad" placeholder="Intensidad horaria">
                   </div>                  
                 </div>
                 
