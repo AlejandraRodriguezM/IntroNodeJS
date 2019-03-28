@@ -62,13 +62,42 @@ app.post('/crearcurso', (req,res)=>{
 
 //para listar cursos por parte del coordinador
 app.get('/listarcursoscoord', (req,res)=>{
-    cursosDisponibles=funciones.listarCursosDisponibles()
+    funciones.listarCursos()
     
     res.render('listarcursoscoord',{
         listCursos:listaCursos
     })
 })
 
+
+app.get('/cursosdisponibles', (req,res)=>{
+    cursosDisponibles=funciones.listarCursosDisponibles()
+    
+    res.render('cursosdisponibles',{
+        listCursos:cursosDisponibles
+    })
+})
+
+app.get('/inscribir', (req,res)=>{
+    
+    res.render('inscribir',{
+        listCursos:cursosDisponibles
+    })
+})
+
+app.post('/inscribir', (req,res)=>{
+    
+    let registroestudiante={
+        documento:req.body.documento,
+        nombre:req.body.nombre,
+        correo:req.body.correo,
+        telefono:req.body.telefono
+    }
+
+    res.render('inscribir',{
+        listCursos:cursosDisponibles
+    })
+})
 
 app.listen(3000,()=>{
     console.log('Escuchando en el puerto 3000')

@@ -1,0 +1,30 @@
+{{>header}}
+<div class="container-fluid">
+    <div class="accordion" id="accordionExample"></div>
+        {{#each listCursos}}
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link bold_lett collapsed" id="acordeon" type="button" data-toggle="collapse" data-target="#collapseOne{{@index}}" aria-expanded="true" aria-controls="collapseOne">
+                            Nombre curso: {{nombre}}<br/>Valor: ${{valor}} 
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne{{@index}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <p><span class="bold_lett">Nombre:</span> {{nombre}}</p>
+                        <p><span class="bold_lett">Valor:</span> ${{valor}}</p>
+                        <p><span class="bold_lett">Descripcion:</span> {{descripcion}}</p>
+                        <p><span class="bold_lett">Modalidad:</span> {{modalidad}}</p>
+                    </div>
+                </div>
+            </div>            
+                        
+        {{/each}} 
+    </div>
+</div>
+  
+
+
+{{>footer}}

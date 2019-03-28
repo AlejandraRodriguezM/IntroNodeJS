@@ -10,3 +10,11 @@ body {
 input[type="number"] {
     width: 100%;
 }
+
+#acordeon{
+    text-align: left;
+}
+
+.bold_lett{
+    font-weight: bold;
+}

@@ -1,5 +1,6 @@
 const fs=require('fs');
 listaCursos=[]
+listaEstudiantes=[]
 
 
 const listarCursos=()=>{
@@ -47,10 +48,29 @@ const listarCursosDisponibles=()=>{
     return cursosDisponibles
 }
 
+const listarEstudiantes=()=>{
+    try{
+        require('../listadoEstudiantes.json')
+    }catch(error){
+        listaEstudiantes=[]
+    }
+}
+
+const crearEstudiante=(estudiante)=>{
+    
+}
+
+const guardarEstudiante=()=>{
+
+}
+
 module.exports={
     listarCursos,
     crearCurso,
     guardarCurso,
     listaCursos,
-    listarCursosDisponibles
+    listarCursosDisponibles,
+    listarEstudiantes,
+    crearEstudiante,
+    guardarEstudiante
 }
