@@ -9,12 +9,12 @@
         <div class="row justify-content-center">
           
 
-         {{#unless flag_crearcurso}}
+         {{#unless flagEstudianteInscrito}}
                 <div class="container p-4">
                     <div class="row">
                         <div class="col-md-4 mx-auto">
                           <div class="alert alert-danger" role="alert">
-                               Ya existe un curso con este id
+                                Ya está registrado en este curso
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -30,42 +30,42 @@
                 <h1 class="h4 text-gray-900 mb-4">Formulario para inscribirse en un curso</h1>
                 <h4 class="h6 text-gray-900 mb-4">A continuación registre la información del nuevo curso</h4>
               </div>
-              <form action="/crearcurso" method="POST" >
+              <form action="/inscribir" method="POST" >
 
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="number" min="1" class="form-control form-control-user" id="Idcurso" name='Idcurso' placeholder="Id del curso" required>
+                    <input type="number" min="1" class="form-control form-control-user" id="documento" name='documento' placeholder="Documento de identificación" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="Nombrecurso" name="Nombrecurso" placeholder="Nombre del curso" required>
+                    <input type="text" class="form-control form-control-user" id="nombre" name="nombre" placeholder="Nombre estudiante" required>
                   </div>                  
                 </div> 
 
-
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="email" class="form-control form-control-user" id="correo" name="correo" placeholder="Correo electrónico" required>
+                  </div> 
+                  <div class="col-sm-6">
+                    <input type="tel" class="form-control form-control-user" id="telefono" name="Intentelefonosidad" placeholder="Teléfono">
+                  </div>                  
+                </div>
+
+                <div class="form-group row">
+                  <div class="col-sm-12 mb-6 mb-sm-0">
                     
-                    <select class="form-control form-control-user" name="Modalidad" id="Modalidad" >
-                        <option disabled selected>Selecciona una modalidad</option>
-                        <option value="Virtual">Virtual</option>
-                        <option value="Presencial">Presencial</option>
+                    <select class="form-control form-control-user" name="curso" id="curso" >
+                        <option disabled selected>Selecciona el curso</option>
+
+                        {{#each listCursos}}
+                           <option value="{{nombre}}">{{nombre}}</option>
+                        {{/each}} 
+                        
                     </select>
                   </div> 
                     
-                  <div class="col-sm-6">
-                    <input type="number" min="0" class="form-control form-control-user" id="Valor"  name='Valor' placeholder="Valor" required>
-                  </div>    
+                  
                 </div> 
 
-                
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <textarea rows="4"  class="form-control form-control-user" id="Descripcion" name="Descripcion" placeholder="Escriba una descripción del curso" required></textarea>
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="number" min="1" class="form-control form-control-user" id="Intensidad" name="Intensidad" placeholder="Intensidad horaria">
-                  </div>                  
-                </div>
                 
                 
                 <button class="btn btn-primary btn-user btn-block">

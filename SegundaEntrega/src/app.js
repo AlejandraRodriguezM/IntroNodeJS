@@ -6,6 +6,7 @@ const bodyParser=require('body-parser')
 const funciones=require('./funciones')
 
 let flag=true;
+let flagEstudianteInscrito=true;
 
 //ruta de la carpeta public
 const directoriopublico=path.join(__dirname,'../public');
@@ -79,9 +80,11 @@ app.get('/cursosdisponibles', (req,res)=>{
 })
 
 app.get('/inscribir', (req,res)=>{
+    cursosDisponibles=funciones.listarCursosDisponibles()
     
     res.render('inscribir',{
-        listCursos:cursosDisponibles
+        listCursos:cursosDisponibles,
+        flagEstudianteInscrito:flagEstudianteInscrito
     })
 })
 
@@ -91,12 +94,19 @@ app.post('/inscribir', (req,res)=>{
         documento:req.body.documento,
         nombre:req.body.nombre,
         correo:req.body.correo,
-        telefono:req.body.telefono
+        telefono:req.body.telefono,
+        curso:req.body.curso
     }
 
-    res.render('inscribir',{
-        listCursos:cursosDisponibles
-    })
+    flagEstudianteInscrito=funciones.crearEstudiante(registroestudiante)
+
+    if(flagEstudianteInscrito){
+        res.redirect('/inscribir')
+    }else{
+        res.redirect('/inscribir')
+    }
+    
+    res.send('inscrito')
 })
 
 app.listen(3000,()=>{

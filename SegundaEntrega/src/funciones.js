@@ -40,9 +40,9 @@ const guardarCurso=()=>{
 const listarCursosDisponibles=()=>{
     listarCursos()
     let cursosDisponibles=listaCursos.filter(cur=>cur.estado=='disponible');
-    console.log(cursosDisponibles)
+    
     if(!cursosDisponibles){
-        console.log('No hay cursos disponibles')
+        console.log('No hay cursos disponibles')   //OJOOOOOO AJUSTAR!!!!
     }
     
     return cursosDisponibles
@@ -50,18 +50,32 @@ const listarCursosDisponibles=()=>{
 
 const listarEstudiantes=()=>{
     try{
-        require('../listadoEstudiantes.json')
+        listaEstudiantes=require('../InscripcionEstudiantes.json')
     }catch(error){
         listaEstudiantes=[]
     }
 }
 
 const crearEstudiante=(estudiante)=>{
+    let flagEstudianteInscrito=false;
     
+    listarEstudiantes()
+    
+    let duplicado=listaEstudiantes.find(est=>est.documento==estudiante.documento && est.curso==estudiante.curso)
+    if(!duplicado){
+        listaEstudiantes.push(estudiante)
+        guardarEstudiante()
+        flagEstudianteInscrito=true;
+    }
+    return flagEstudianteInscrito
 }
 
 const guardarEstudiante=()=>{
-
+    let datosEstudiante=JSON.stringify(listaEstudiantes);
+    fs.writeFile('InscripcionEstudiantes.json',datosEstudiante,(err)=>{
+        if(err) throw (err);
+        console.log('Archivo creado con éxito')
+    })
 }
 
 module.exports={
