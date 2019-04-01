@@ -3171,11 +3171,13 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #4e73df;
+ /*color: #224abe;*/
+  color: #2D572C ;
 }
 
 .btn-link:hover {
-  color: #224abe;
+  /*color: #224abe;*/
+  color: #2D572C ;
   text-decoration: underline;
 }
 
@@ -10196,11 +10198,13 @@ button.bg-dark:focus {
 }
 
 .text-primary {
-  color: #4e73df !important;
+  /*color: #4e73df !important;*/
+  color: #2D572C !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
-  color: #224abe !important;
+  /*color: #224abe !important;*/
+  color: #2D572C !important;
 }
 
 .text-secondary {

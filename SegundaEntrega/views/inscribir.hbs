@@ -3,7 +3,9 @@
 
   <div class="container">
 
-    <div class="card o-hidden border-0 shadow-lg">
+
+   {{#if flagcurso}}
+    <div class="card o-hidden border-0 shadow-lg mt-3">
       <div class="card-body p-0 ">
         <!-- Nested Row within Card Body -->
         <div class="row justify-content-center">
@@ -14,7 +16,7 @@
                     <div class="row">
                         <div class="col-md-4 mx-auto">
                           <div class="alert alert-danger" role="alert">
-                                Ya está registrado en este curso
+                                Ya se encontraba registrado en este curso
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -22,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-          {{/unless}}
+          {{/unless}}       
 
           <div class="col-lg-7">
             <div class="p-5">
@@ -46,7 +48,7 @@
                     <input type="email" class="form-control form-control-user" id="correo" name="correo" placeholder="Correo electrónico" required>
                   </div> 
                   <div class="col-sm-6">
-                    <input type="tel" class="form-control form-control-user" id="telefono" name="Intentelefonosidad" placeholder="Teléfono">
+                    <input type="tel" class="form-control form-control-user" id="telefono" name="telefono" placeholder="Teléfono">
                   </div>                  
                 </div>
 
@@ -78,9 +80,15 @@
               
             </div>
           </div>
+
         </div>
       </div>
     </div>
+
+    {{else}}
+          <h3 class="mt-5 text-center">En este momento no hay cursos disponibles</h3>
+
+    {{/if}}
 
   </div>
 

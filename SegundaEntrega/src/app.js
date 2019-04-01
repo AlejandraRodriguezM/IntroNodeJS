@@ -3,7 +3,7 @@ const app=express();
 const path=require('path');
 const hbs=require('hbs');
 const bodyParser=require('body-parser')
-const funciones=require('./funciones')
+const funciones=require('./funciones.1')
 
 let flag=true;
 let flagEstudianteInscrito=true;
@@ -23,24 +23,21 @@ hbs.registerPartials(directoriopartials);
 app.use(bodyParser.urlencoded({extended:false}));
 
 app.get('/', (req,res)=>{
-    //res.render('index')
+    res.render('index')
 
 })
 
+//para que el coordinador registre un nuevo curso
 app.get('/crearcurso', (req,res)=>{
     res.render('crearcurso',{
         flag_crearcurso:flag
     })
+    if (!flag){
+        flag=true
+    }
 })
 
 app.post('/crearcurso', (req,res)=>{
-   
-    // let mod;
-    // if(req.body.Modalidad===undefined){
-    //     mod='-'
-    // }else{
-    //     mod=req.body.Modalidad
-    // }
 
     let curso={
         id:req.body.Idcurso,
@@ -62,6 +59,7 @@ app.post('/crearcurso', (req,res)=>{
 })
 
 //para listar cursos por parte del coordinador
+//y cambiar el estado de un curso
 app.get('/listarcursoscoord', (req,res)=>{
     funciones.listarCursos()
     
@@ -70,7 +68,20 @@ app.get('/listarcursoscoord', (req,res)=>{
     })
 })
 
+app.post('/listarcursoscoord', (req,res)=>{
+    funciones.listarCursos()
+   let idcurso=req.body.idcurso
+   funciones.cambiarEstadoCurso(idcurso) 
+   
+   res.render('listarcursoscoord',{
+        listCursos:listaCursos,
+        flag:true
+    })
 
+
+})
+
+//para ver la lista de cursos con estado disponible
 app.get('/cursosdisponibles', (req,res)=>{
     cursosDisponibles=funciones.listarCursosDisponibles()
     
@@ -79,12 +90,19 @@ app.get('/cursosdisponibles', (req,res)=>{
     })
 })
 
+//para que un estudiante se inscriba en un curso
 app.get('/inscribir', (req,res)=>{
     cursosDisponibles=funciones.listarCursosDisponibles()
+    console.log(cursosDisponibles.length)
+    let flag_cursos=true
+    if(cursosDisponibles.length == 0){
+        flag_cursos=false
+    }
     
     res.render('inscribir',{
         listCursos:cursosDisponibles,
-        flagEstudianteInscrito:flagEstudianteInscrito
+        flagEstudianteInscrito:flagEstudianteInscrito,
+        flagcurso:flag_cursos
     })
 })
 
@@ -94,19 +112,55 @@ app.post('/inscribir', (req,res)=>{
         documento:req.body.documento,
         nombre:req.body.nombre,
         correo:req.body.correo,
-        telefono:req.body.telefono,
-        curso:req.body.curso
+        telefono:req.body.telefono
     }
+    let curso=req.body.curso
 
-    flagEstudianteInscrito=funciones.crearEstudiante(registroestudiante)
+    flagEstudianteInscrito=funciones.crearEstudiante(registroestudiante,curso)
 
     if(flagEstudianteInscrito){
-        res.redirect('/inscribir')
+        res.redirect('/fininscripcion')
+        console.log('se inscribió')
     }else{
         res.redirect('/inscribir')
+        console.log('repetido')
     }
     
-    res.send('inscrito')
+})
+
+
+//para mostrar info registrada por el estudiante cuadno se inscribió
+app.get('/fininscripcion', (req,res)=>{
+    funciones.listarCursos()
+    let ultimoCursoEstudiante=funciones.getUltimoCursoEstudiante()
+   
+    res.render('fininscripcion',{
+        infoestudiante:[ultimoCursoEstudiante]
+        
+    })
+})
+
+//para ver los estudiantes inscritos en cada curso
+//e igualmente se pueden eliminar los estudiantes
+app.get('/verinscritos', (req,res)=>{
+
+    funciones.listarCursos()
+    
+    res.render('verinscritos',{
+        listCursos:listaCursos
+    })
+})
+
+app.post('/verinscritos', (req,res)=>{
+    
+    funciones.listarCursos()
+    let todelete=req.body.deleteestudiante //desde el formulario retorna idcurso-documentoestudiante
+    funciones.eliminarEstudiante(todelete)
+  
+    res.render('verinscritos',{
+        listCursos:listaCursos,
+        flag:true
+    })
 })
 
 app.listen(3000,()=>{
