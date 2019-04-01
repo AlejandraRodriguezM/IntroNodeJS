@@ -1,1 +1,0 @@
-Si se intentan listar los cursos en la tabla sin que esté creado el archivo .json
