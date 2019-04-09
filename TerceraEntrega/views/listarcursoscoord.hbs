@@ -1,0 +1,133 @@
+{{>header}}
+
+<div id="page-top" >
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="form-group">
+          <div class="container-fluid">
+            
+
+            {{#if flag}}
+                <div class="container p-4">
+                    <div class="row">
+                        <div class="col-md-4 mx-auto">
+                          <div class="alert alert-success" role="alert">
+                                Se ha actualizado exitosamente el curso
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          {{/if}}
+            <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4 mt-3">
+              <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary">Lista de cursos</h6>
+              </div>
+              <div class="card-body">
+                
+                <div class="table-responsive">
+                  
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                        <tr>
+                          <th>Id</th>
+                          <th>Nombre</th>
+                          <th>Descripción</th>
+                          <th>Valor</th>
+                          <th>Modalidad</th>
+                          <th>Intensidad</th>
+                          <th>Estado</th>
+                        </tr>
+                      </thead>
+                     
+                      <tbody>
+                      
+                      {{#each listCursos}}
+                        
+                        <tr>
+                          <td>{{id}} </td>
+                          <td>{{nombre}}</td>
+                          <td>{{descripcion}}</td>
+                          <td>$ {{valor}}</td>
+                          <td>{{#if modalidad}}{{modalidad}}{{else}}- {{/if}}</td>
+                          <td>{{#if intensidad}}{{intensidad}}{{else}}- {{/if}}</td>
+                          <td>{{estado}}</td>
+                        </tr>
+                        {{/each}} 
+                      
+                      </tbody>
+                    </table>
+                 {{!--  <button type="submit" class="btn btn-primary btn-block mt-5">REALIZAR PEDIDO</button> --}}
+                
+                </div>
+
+                 <h2 class='mt-3'>Actualizar estado de un curso</h2>
+                 <form action="/listarcursoscoord" method="POST" >
+                    <div class="form-group row">
+                      <div class="col-sm-12 mb-6 mb-sm-0">
+                        
+                        <select class="form-control form-control-user" name="idcurso" id="curso" >
+                            <option disabled selected>Selecciona el curso</option>
+
+                            {{#each listCursos}}
+                              <option value="{{id}}">{{nombre}}</option>
+                            {{/each}} 
+                            
+                        </select>
+                        <button class="btn btn-primary btn-user mt-2">
+                          Enviar
+                        </button>
+                
+                      </div> 
+
+                    </div>
+                 </form>
+                 
+            </div>
+
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+   
+      
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+ 
+
+
+</div>
+
+{{>footer}}
