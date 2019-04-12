@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 
 //Routes
-app.use(require('../routes/index'));
+app.use(require('./routes/index'));
 
 
 
