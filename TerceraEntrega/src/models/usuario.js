@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
-const Curso = require('./estudiante');
+const Curso = require('./curso');
 
 const Schema = mongoose.Schema;
-const estudianteSchema = new Schema({
+const usuarioSchema = new Schema({
+
     documento:{
         type : String,
 		required : true	,
@@ -29,15 +30,21 @@ const estudianteSchema = new Schema({
 		type: String,
         required : true,
         trim : true			
-	}
-	,
-    cursos: [{ type: Schema.Types.ObjectId, ref: 'Curso' }]
+	},
+
+	rol: {
+		type: String,
+        required : true,
+        trim : true			
+	},
+	// ,
+    // cursos: [{ type: Schema.Types.ObjectId, ref: 'Curso' }]
 });
 
-estudianteSchema.plugin(uniqueValidator);
+usuarioSchema.plugin(uniqueValidator);
 
-const Estudiante = mongoose.model('Estudiante', estudianteSchema);
+const Usuario = mongoose.model('Usuario', usuarioSchema);
 
-module.exports = Estudiante
+module.exports = Usuario
 
 

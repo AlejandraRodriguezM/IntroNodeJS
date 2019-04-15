@@ -30,28 +30,28 @@
             <div class="p-5">
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Formulario para inscribirse en un curso</h1>
-                <h4 class="h6 text-gray-900 mb-4">A continuación registre la información del nuevo curso</h4>
+                <h4 class="h6 text-gray-900 mb-4">A continuación registre el curso que desea inscribir</h4>
               </div>
               <form action="/inscribir" method="POST" >
-
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="number" min="1" class="form-control form-control-user" id="documento" name='documento' placeholder="Documento de identificación" required>
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="nombre" name="nombre" placeholder="Nombre estudiante" required>
-                  </div>                  
-                </div> 
-
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="email" class="form-control form-control-user" id="correo" name="correo" placeholder="Correo electrónico" required>
+                {{#each infoUsuario}}
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input type="number" min="1" class="form-control form-control-user" id="documento" name='documento' placeholder="{{documento}}" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-control-user" id="nombre" name="nombre" placeholder="{{nombre}}" readonly>
+                    </div>                  
                   </div> 
-                  <div class="col-sm-6">
-                    <input type="tel" class="form-control form-control-user" id="telefono" name="telefono" placeholder="Teléfono" required>
-                  </div>                  
-                </div>
 
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input type="email" class="form-control form-control-user" id="correo" name="correo" placeholder="{{correo}}" value="{{correo}}" required>
+                    </div> 
+                    <div class="col-sm-6">
+                      <input type="tel" class="form-control form-control-user" id="telefono" name="telefono" placeholder="{{telefono}}" value="{{telefono}}" required>
+                    </div>                  
+                  </div>
+                {{/each}}
                 <div class="form-group row">
                   <div class="col-sm-12 mb-6 mb-sm-0">
                     

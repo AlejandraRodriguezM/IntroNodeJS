@@ -31,14 +31,39 @@
               <div class="navbar-nav ">
             
                 <a class="nav-item nav-link " href="/">Inicio</a>
-                <a class="nav-item nav-link " href="/crearcurso">Crear curso</a>
-                <a class="nav-item nav-link" href="/listarcursoscoord">Ver cursos(Coordinador) </a>
-                <a class="nav-item nav-link" href="/cursosdisponibles">Ver cursos(Interesado) </a>
-                <a class="nav-item nav-link" href="/inscribir">Inscribir</a>
-                <a class="nav-item nav-link" href="/verinscritos">Ver inscritos</a>
                 
+              
+                {{#if sesion}}
+
+                    {{#if (equal rol "Aspirante")}}
+                      
+                      <a class="nav-item nav-link" href="/cursosdisponibles">Cursos</a>
+                      <a class="nav-item nav-link" href="/inscribir">Inscribir</a>
+                     
+                    {{else}}
+                      <a class="nav-item nav-link " href="/crearcurso">Crear curso</a>
+                      <a class="nav-item nav-link" href="/listarcursoscoord">Ver cursos</a>
+                      <a class="nav-item nav-link" href="/verinscritos">Ver inscritos</a>
+                    {{/if}}  
+                    
+                {{else}}
+                  <a class="nav-item nav-link " href="/cursosdisponibles">Cursos</a>
+                {{/if}}  
               </div>
+
+              {{#if sesion}}
+                <div class="nav navbar-nav ml-auto">
+                  <a class="nav-item nav-link " href="/cerrarSesion">Cerrar sesión</a>
+                </div>
+              {{else}} 
+                 <div class="nav navbar-nav ml-auto">
+                  <a class="nav-item nav-link " href="/login">Iniciar sesión</a>
+                  <a class="nav-item nav-link " href="/registro">Registrarse</a>
+                </div>
+               
+              {{/if}}    
             </div>
+            
       </nav>
     </header>
 <!--
