@@ -407,7 +407,7 @@ app.post('/verinscritos', (req,res)=>{
     let array = todelete.split("-");
 
 
-    Curso.findOneAndUpdate({ id: array[0] }, { $pull: { estudiantes: array[1]  } },
+    Curso.findOneAndUpdate({ id: array[0] }, { $pull: { "estudiantes": array[1]  } },
         function (err, success) {
             if (err){
                 return console.log(err)
