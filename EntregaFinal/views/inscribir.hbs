@@ -1,0 +1,100 @@
+{{>header}}
+
+
+  <div class="container">
+
+
+   {{#if flagcurso}}
+    <div class="card o-hidden border-0 shadow-lg mt-3">
+      <div class="card-body p-0 ">
+        <!-- Nested Row within Card Body -->
+        <div class="row justify-content-center">
+          
+
+         {{#unless flagEstudianteInscrito}}
+                <div class="container p-4">
+                    <div class="row">
+                        <div class="col-md-4 mx-auto">
+                          <div class="alert alert-danger" role="alert">
+                                Ya se encontraba registrado en este curso
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          {{/unless}}       
+
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Formulario para inscribirse en un curso</h1>
+                <h4 class="h6 text-gray-900 mb-4">A continuación registre el curso que desea inscribir</h4>
+              </div>
+              <form action="/inscribir" method="POST" >
+                {{#each infoUsuario}}
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input type="number" min="1" class="form-control form-control-user" id="documento" name='documento' placeholder="{{documento}}" readonly>
+                    </div>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control form-control-user" id="nombre" name="nombre" placeholder="{{nombre}}" readonly>
+                    </div>                  
+                  </div> 
+
+                  <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                      <input type="email" class="form-control form-control-user" id="correo" name="correo" placeholder="{{correo}}" value="{{correo}}" required>
+                    </div> 
+                    <div class="col-sm-6">
+                      <input type="tel" class="form-control form-control-user" id="telefono" name="telefono" placeholder="{{telefono}}" value="{{telefono}}" required>
+                    </div>                  
+                  </div>
+                {{/each}}
+                <div class="form-group row">
+                  <div class="col-sm-12 mb-6 mb-sm-0">
+                    
+                    <select class="form-control form-control-user" name="curso_id" id="curso" >
+                        <option disabled selected>Selecciona el curso</option>
+
+                        {{#each listCursos}}
+                           <option value="{{id}}">{{nombre}}</option>
+                        {{/each}} 
+                        
+                    </select>
+                  </div> 
+                    
+                  
+                </div> 
+
+                
+                
+                <button class="btn btn-primary btn-user btn-block">
+                  Enviar
+                </button>
+                <hr>
+               
+              </form>
+             
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    {{else}}
+          <h3 class="mt-5 text-center">En este momento no hay cursos disponibles</h3>
+
+    {{/if}}
+
+  </div>
+
+
+
+
+
+{{>footer}}
+

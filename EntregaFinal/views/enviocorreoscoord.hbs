@@ -1,0 +1,93 @@
+{{>header}}
+
+  <div class="container">
+
+   {{#if flagcurso}}
+    <div class="card o-hidden border-0 shadow-lg mt-3">
+      <div class="card-body p-0 ">
+        <!-- Nested Row within Card Body -->
+        <div class="row justify-content-center">
+          
+{{!-- 
+         {{#unless flagEstudianteInscrito}}
+                <div class="container p-4">
+                    <div class="row">
+                        <div class="col-md-4 mx-auto">
+                          <div class="alert alert-danger" role="alert">
+                                Ya se encontraba registrado en este curso
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+          {{/unless}}        --}}
+
+          <div class="col-lg-7">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Envio de correos</h1>
+                <h4 class="h6 text-gray-900 mb-4">A continuación redacte el correo. Dicho correo llegará a los estudiantes inscritos en el curso que usted seleccione</h4>
+              </div>
+              <form action="/enviocorreo" method="POST" >
+                
+                  <div class="form-group row">
+                 
+                    <div class="col-sm-12 mb-6 mb-sm-0">
+                      <input type="text" class="form-control form-control-user" id="asunto" name="asunto" placeholder="Asunto">
+                    </div>                  
+                  </div> 
+
+                  <div class="form-group row">
+                    <div class="col-sm-12 mb-6 mb-sm-0">
+                       <textarea rows="7"  class="form-control form-control-user" id="Texto" name="Texto" placeholder="Escriba el texto del correo" required></textarea>         
+                    </div>
+                  </div>
+                
+                <div class="form-group row">
+                  <div class="col-sm-12 mb-6 mb-sm-0">
+                    
+                    <select class="form-control form-control-user" name="curso_id" id="curso" >
+                        <option disabled selected>Selecciona el curso</option>
+
+                        {{#each listCursos}}
+                           <option value="{{id}}">{{nombre}}</option>
+                        {{/each}} 
+                        
+                    </select>
+                  </div> 
+                    
+                  
+                </div> 
+
+                
+                
+                <button class="btn btn-primary btn-user btn-block">
+                  Enviar
+                </button>
+                <hr>
+               
+              </form>
+             
+              
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    {{else}}
+          <h3 class="mt-5 text-center">En este momento no se puede enviar correos, ya que no hay cursos disponibles</h3>
+
+    {{/if}}
+
+  </div>
+
+
+
+
+{{>footer}}
+
+

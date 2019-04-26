@@ -1,0 +1,83 @@
+{{>header}}
+
+  <div class="container-fluid">
+      {{#if flag}}
+          <div class="container p-4">
+              <div class="row">
+                  <div class="col-md-4 mx-auto">
+                    <div class="alert alert-success" role="alert">
+                          Se ha eliminado exitosamente el usuario
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      {{/if}}
+
+     <h2 class="mt-3">Lista de cursos y estudiantes inscritos</h1> 
+    <div class="accordion" id="accordionExample">
+      {{#each listCursos}}
+          <div class="card">
+              <div class="card-header" id="headingOne">
+                  <h5 class="mb-0">
+                      <button class="btn btn-link bold_lett collapsed" id="acordeon" type="button" data-toggle="collapse" data-target="#collapseOne{{@index}}" aria-expanded="true" aria-controls="collapseOne">
+                          Nombre curso: {{nombre}}<br/>Valor: ${{valor}} 
+                      </button>
+                  </h5>
+              </div>
+
+              <div id="collapseOne{{@index}}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                  <div class="card-body">
+                                
+                        {{#if estudiantes}}                   
+                        <div class="table-responsive">
+                    
+                          <table class="table table-bordered"  width="100%" cellspacing="0">
+                              <thead>
+                                <tr>
+                                  <th>Documento</th>
+                                  <th>Nombre</th>
+                                  <th>Correo</th>
+                                  <th>Teléfono</th>
+                                  <th>Eliminar</th>
+                                </tr>
+                              </thead>
+                            
+                              <tbody>
+                            
+                              {{#each estudiantes}}
+                                
+                                <tr>
+                                  <td>{{documento}} </td>
+                                  <td>{{nombre}}</td>
+                                  <td>{{correo}}</td>
+                                  <td>{{telefono}}</td>
+                                  <td>
+                                    <form action="/verinscritos" method="POST" >
+                                      <input name="deleteestudiante" type="hidden" value="{{../id}}-{{documento}}">
+                                      <button type="submit" class="btn btn-primary btn-block ">Eliminar</button>
+                                    </form>
+                                  </td>
+                                </tr>
+                                {{/each}} 
+                              
+                              </tbody>
+                          </table>          
+                  
+                        </div>
+
+                        {{else}}
+                        <p>No hay estudiantes inscritos en este curso</p>
+                      {{/if}}
+                  </div> 
+              </div>                
+          </div>            
+      {{/each}} 
+            
+    </div>
+   
+</div>
+
+{{>footer}}
