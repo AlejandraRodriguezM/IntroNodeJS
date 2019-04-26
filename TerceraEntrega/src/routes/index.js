@@ -325,9 +325,10 @@ app.post('/inscribir', isAuthenticated,(req,res)=>{
         let estudiantes_id=InfoCurso[0].estudiantes
 
         flag_est=estudiantes_id.includes(req.session.documento)
+        console.log('documento '+req.session.documento)
 
         if(!flag_est){
-            Curso.findOneAndUpdate({ id: req.body.curso_id }, { $push: { estudiantes: req.session.documento  } },
+            Curso.findOneAndUpdate({ id: req.body.curso_id }, { $push: { "estudiantes": req.session.documento  } },
                 function (err, success) {
                     if (err){
                         return console.log(err)
