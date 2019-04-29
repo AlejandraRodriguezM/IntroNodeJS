@@ -58,10 +58,10 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'local';
 
 let urlDB
 if (process.env.NODE_ENV === 'local'){
-	urlDB =  'mongodb://localhost:27017/myproject';
+	urlDB =  'mongodb://localhost:27017/entregaFinal';
 }
 else {
-	urlDB = 'mongodb+srv://alejandra:bdalejandracurso@nodejscursointronode-gjo5f.mongodb.net/myproject?retryWrites=true'
+	urlDB = 'mongodb+srv://alejandra:bdalejandracurso@nodejscursointronode-gjo5f.mongodb.net/entregaFinal?retryWrites=true'
 }
 
 process.env.URLDB = urlDB
