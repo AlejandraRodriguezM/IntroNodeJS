@@ -10,7 +10,6 @@ require('./../helpers/helpers')
 const sgMail = require('@sendgrid/mail');
 require('../config/config');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-console.log(process.env.SENDGRID_API_KEY)
 
 let flag=true;
 let flagEstudianteInscrito=true;
@@ -637,6 +636,13 @@ app.get('/miscursos',  isAuthenticated,(req,res)=>{
 
 
 })
+
+
+
+
+const { Usuarios } = require('../chat/usuarios');
+// const {server} = require('../app')
+// const io = require('socket.io').listen(server);
 
 
 

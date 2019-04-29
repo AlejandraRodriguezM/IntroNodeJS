@@ -75,6 +75,60 @@ mongoose.connect(process.env.URLDB, {useNewUrlParser: true}, (err, resultado) =>
 
 
 
-app.listen(process.env.PORT, () => {
+
+////CHAT
+
+ const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
+const { Usuarios } = require('./chat/usuarios');
+const usuarios = new Usuarios();
+
+
+io.on('connection', client => {
+
+	console.log("un usuario se ha conectado")
+
+	client.on('usuarioNuevo', () =>{
+		let listado = usuarios.agregarUsuario(client.id, usuariochat)
+		console.log(listado)
+		let texto = `Se ha conectado ${ app.locals.usuariochat}`
+		io.emit('nuevoUsuario', texto )
+	})
+
+	client.on('disconnect',()=>{
+		let usuarioBorrado = usuarios.borrarUsuario(client.id)
+		let texto = `Se ha desconectado ${usuarioBorrado.nombre}`
+		io.emit('usuarioDesconectado', texto)
+			})
+
+	client.on("texto", (text, callback) =>{
+		let usuario = usuarios.getUsuario(client.id)
+		let texto = `${usuario.nombre} : ${text}`
+		
+		io.emit("texto", (texto))
+		callback()
+	})
+
+	
+});
+
+
+server.listen(process.env.PORT, () => {
 	console.log ('servidor en el puerto ' + process.env.PORT)
 });
+
+
+//funcion para revisar si hay usuario autenticado
+function isAuthenticated(req, res, next) {
+    
+    if (req.session.usuario)
+        return next();
+  
+    res.redirect('/');
+  }
+ let usuariochat
+app.get('/chat',  isAuthenticated,(req,res)=>{
+
+    res.render('chat')
+	usuariochat=req.session.nombre
+})
