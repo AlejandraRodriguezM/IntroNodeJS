@@ -36,10 +36,6 @@ app.use(session({
 
 
 app.use((req, res, next) =>{
-
-	// res.locals.sesion = true
-	// 	res.locals.nombre = "aleja"
-	// 	res.locals.rol = "Aspirante"
 	
 	if(req.session.usuario){		
 		res.locals.sesion = true
@@ -72,7 +68,7 @@ process.env.URLDB = urlDB
 
 mongoose.connect(process.env.URLDB, {useNewUrlParser: true}, (err, resultado) => {
 	if (err){
-		return console.log(error)
+		return console.log(err)
 	}
 	console.log("conectado")
 });

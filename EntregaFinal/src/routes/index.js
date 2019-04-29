@@ -1,20 +1,25 @@
 const express = require('express')
 const app = express ()
-const path = require('path')
-const hbs = require ('hbs')
 const Usuario = require('../models/usuario')
 const Curso = require('./../models/curso')
-// const dirViews = path.join(__dirname, '../../template/views')
-// const dirPartials = path.join(__dirname, '../../template/partials')
 const bcrypt = require('bcrypt');
 var assert = require('assert');
+const multer=require('multer')
+const path=require('path');
 require('./../helpers/helpers')
-
+const sgMail = require('@sendgrid/mail');
+require('../config/config');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+console.log(process.env.SENDGRID_API_KEY)
 
 let flag=true;
 let flagEstudianteInscrito=true;
 let flagRegistroUsuario=true;
 let flagCambioEstadoCurso=false;
+let flagperfil=false;
+var foto_perfil;
+var extension;
+
 
 //funcion para revisar si hay usuario autenticado
 function isAuthenticated(req, res, next) {
@@ -60,7 +65,9 @@ app.post('/registro', (req,res)=>{
         password:bcrypt.hashSync(req.body.contrasena, 10),
         correo:req.body.correo,
         telefono:req.body.telefono,
-        rol:"Aspirante"
+        rol:"Aspirante",
+        fotoperfil:"",
+        extensionfoto:''
     })
 
     usuario.save((err, resultado) => {
@@ -262,7 +269,7 @@ app.get('/cursosdisponibles', (req,res)=>{
     
 })
 
-
+//para que un usuario se inscriba en un curso
 app.get('/inscribir',isAuthenticated, (req,res)=>{
     
     if (req.session.rol!="Aspirante"){    
@@ -310,7 +317,7 @@ app.get('/inscribir',isAuthenticated, (req,res)=>{
 })
 
 app.post('/inscribir', isAuthenticated,(req,res)=>{
-    
+    console.log("inscribir")
     //la persona selecciona el curso y en el body llega el id correspondiente
     let curso=req.body.curso_id
 
@@ -352,7 +359,7 @@ app.post('/inscribir', isAuthenticated,(req,res)=>{
 
 
 
-// //para ver los estudiantes inscritos en cada curso
+// //para ver los estudiantes inscritos en cada curso por parte del coordinador
 // //e igualmente se pueden eliminar los estudiantes
 
 
@@ -400,7 +407,7 @@ app.get('/verinscritos',  isAuthenticated,(req,res)=>{
 
 })
 
-app.post('/verinscritos', (req,res)=>{
+app.post('/verinscritos',isAuthenticated, (req,res)=>{
     
    
     let todelete=req.body.deleteestudiante //desde el formulario retorna idcurso-documentoestudiante
@@ -420,7 +427,7 @@ app.post('/verinscritos', (req,res)=>{
  
 })
 
-//envio de correos por parte del coordinador -------------------OJO FALTA VALIDAR QUE SI NO HAY ESTUDIANETS INSCRITOS EN EL CURSO NO ENVIE EL CORREO
+//envio de correos por parte del coordinador
 
 app.get('/enviocorreo',isAuthenticated, (req,res)=>{
     
@@ -432,21 +439,203 @@ app.get('/enviocorreo',isAuthenticated, (req,res)=>{
         if (err){
             return console.log(err)
         }
+
+        let mensaje
+        
+        //bandera para detectar si hay cursos con estado disponible
         let flag_cursos=true
+        
         if(listaCursos.length == 0){
             flag_cursos=false
+            mensaje="En este momento no se puede enviar correos, ya que no hay cursos con estado disponible"
+        }else{
+             //Verificar sólo para cuales cursos hay estudiantes inscritos            
+            listaCursos=listaCursos.filter(asp=>asp.estudiantes.length!=0)
+            
+            if(!Array.isArray(listaCursos)){ //si solo retorna un elemento, lo retorna como objeto y no como array
+                listaCursos=[listaCursos]
+            }
+
+           
+            if(listaCursos.length === 0){
+                flag_cursos=false
+                mensaje="En este momento no se puede enviar correos, ya que no hay estudiantes inscritos en ningún curso"
+                console.log("ok")
+            }
+
         }
 
         res.render ('enviocorreoscoord',{
             listCursos : listaCursos,
+            flagcurso:flag_cursos,
+            mensaje:mensaje,
             //flagEstudianteInscrito:flagEstudianteInscrito,
             flagcurso:flag_cursos
         })
 
-        // if(flagEstudianteInscrito==false){
-        //     flagEstudianteInscrito=true
-        // }
+        if(flag_cursos==false){
+            flag_cursos=true
+        }
     });
+})
+
+app.post('/enviocorreo',isAuthenticated, (req,res)=>{
+    
+   let correos=[]
+   var query = Usuario.find({rol: "Aspirante"})
+   assert.ok(!(query instanceof Promise));
+ 
+   // `.exec()` gives you a fully-fledged promise
+   var promise = query.exec();
+   assert.ok(promise instanceof Promise);
+
+   promise.then(function (aspirante) {
+
+        Curso.find({ id:req.body.curso_id} ,(err,respuesta)=>{
+                if (err){
+                    return console.log(err)
+                }
+                let el;
+                
+                respuesta.forEach(function(item){
+                    //accedo a la prop estudiantes, que tiene un array con el id de los estudiantes matriculados
+                    item.estudiantes.forEach(function(es,index){
+                        el=aspirante.find(asp=>asp.documento==es)
+                        correos.push(el.correo)
+                    })
+                })
+                 
+
+               //Enviar correo
+                if (correos){
+                    for (let x in correos){
+                        const msg={
+                            to:correos[x], 
+                            from:'aleja830@gmail.com',
+                            subject:req.body.asunto,
+                            text:req.body.Texto}
+                        console.log(msg)
+                        sgMail.send(msg)    
+                    } 
+
+                    flag_cursos=false
+                    mensaje="Correo enviado a: "+correos.join()
+                    res.render ('enviocorreoscoord',{
+                        //listCursos : listaCursos,
+                        flagcurso:flag_cursos,
+                        mensaje:mensaje
+                    })
+                      
+                    if(flag_cursos==false){
+                        flag_cursos=true
+                    }
+
+                }
+                
+               
+            })
+  
+   })
+ 
+})
+
+//actualización del perfil por parte del usuario
+
+app.get('/perfil',isAuthenticated, (req,res)=>{
+    
+
+    Usuario.findById(req.session.usuario, (err, usuario) =>{
+        if (err){
+            return console.log(err)
+        }
+        foto_perfil=''
+        extension=''
+        let fotoperfil64
+        if(usuario.fotoperfil){
+            foto_perfil=usuario.fotoperfil
+            fotoperfil64=foto_perfil.toString('base64')
+            extension=usuario.extensionfoto
+        }
+        
+        res.render ('perfil',{
+            infoUsuario:[usuario],
+            foto_perfil:fotoperfil64,
+            flagperfil:flagperfil
+        })
+
+        if(flagperfil==true){
+            flagperfil=false
+        }
+
+    });
+})
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  })
+
+var upload = multer({ })
+
+app.post('/perfil',upload.single('archivo'),(req,res)=>{
+
+    if(req.file){
+        extension = path.extname(req.file.originalname);
+        extension=extension.replace(".", "");
+        foto_perfil=req.file.buffer
+    }
+   
+    Usuario.findOneAndUpdate({documento : req.session.documento}, {$set: {"correo":req.body.correo,"telefono":req.body.telefono,"fotoperfil": foto_perfil,"extensionfoto":extension}}, { runValidators: true, context: 'query' },
+     (err, resultados) => {
+        if (err){
+            return console.log(err)
+        }
+        flagperfil=true
+        res.redirect('/perfil')
+        
+    })	
+
+})
+
+//para que el aspirante pueda ver los cursos en los que está inscrito
+app.get('/miscursos',  isAuthenticated,(req,res)=>{
+    
+    if (req.session.rol!="Aspirante"){
+        return res.redirect('/');
+    }
+    let cursosEstudiante=[]
+
+     Curso.find({ estado:'disponible'} ,(err,respuesta)=>{
+        if (err){
+            return console.log(err)
+        }
+
+        let el;
+        //console.log(respuesta)
+        respuesta.forEach(function(item){
+            //accedo a la prop estudiantes, que tiene un array con el id de los estudiantes matriculados
+            item.estudiantes.forEach(function(es,index){
+                if(es.includes(req.session.documento)){
+                    cursosEstudiante.push(item)
+                }
+               
+            })
+                
+           
+        })
+            
+        console.log(cursosEstudiante)
+        res.render('miscursos',{
+            listCursos:cursosEstudiante
+        })
+    })
+  
+
+
 })
 
 

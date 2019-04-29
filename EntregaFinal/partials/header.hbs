@@ -36,18 +36,20 @@
                 {{#if sesion}}
 
                     {{#if (equal rol "Aspirante")}}
-                      
-                      <a class="nav-item nav-link" href="/cursosdisponibles">Cursos</a>
+                      <a class="nav-item nav-link" href="/miscursos">Mis Cursos</a>
+                      <a class="nav-item nav-link" href="/cursosdisponibles">Cursos disponibles</a>
                       <a class="nav-item nav-link" href="/inscribir">Inscribir</a>
                      
                     {{else}}
                       <a class="nav-item nav-link " href="/crearcurso">Crear curso</a>
                       <a class="nav-item nav-link" href="/listarcursoscoord">Ver cursos</a>
                       <a class="nav-item nav-link" href="/verinscritos">Ver inscritos</a>
+                      <a class="nav-item nav-link" href="/enviocorreo">Enviar correos</a>
                     {{/if}}  
+                    <a class="nav-item nav-link" href="/perfil">Perfil</a>
                     
                 {{else}}
-                  <a class="nav-item nav-link " href="/cursosdisponibles">Cursos</a>
+                  <a class="nav-item nav-link " href="/cursosdisponibles">Cursos disponibles</a>
                 {{/if}}  
               </div>
 

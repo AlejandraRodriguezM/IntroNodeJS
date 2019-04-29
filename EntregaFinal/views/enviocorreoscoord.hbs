@@ -9,12 +9,12 @@
         <div class="row justify-content-center">
           
 {{!-- 
-         {{#unless flagEstudianteInscrito}}
+         {{#unless flagEnvioCorreo}}
                 <div class="container p-4">
                     <div class="row">
                         <div class="col-md-4 mx-auto">
                           <div class="alert alert-danger" role="alert">
-                                Ya se encontraba registrado en este curso
+                                No hay aún estudiantes inscritos en este curso, por tanto no se puede enviar el correo
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -28,14 +28,14 @@
             <div class="p-5">
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Envio de correos</h1>
-                <h4 class="h6 text-gray-900 mb-4">A continuación redacte el correo. Dicho correo llegará a los estudiantes inscritos en el curso que usted seleccione</h4>
+                <h4 class="h6 text-gray-900 mb-4">El correo que redacte llegará a los estudiantes inscritos en el curso que usted seleccione. Solo podrá seleccionar los cursos en estado disponible que tengan estudiantes inscritos</h4>
               </div>
               <form action="/enviocorreo" method="POST" >
                 
                   <div class="form-group row">
                  
                     <div class="col-sm-12 mb-6 mb-sm-0">
-                      <input type="text" class="form-control form-control-user" id="asunto" name="asunto" placeholder="Asunto">
+                      <input type="text" class="form-control form-control-user" id="asunto" name="asunto" placeholder="Asunto" required>
                     </div>                  
                   </div> 
 
@@ -48,8 +48,8 @@
                 <div class="form-group row">
                   <div class="col-sm-12 mb-6 mb-sm-0">
                     
-                    <select class="form-control form-control-user" name="curso_id" id="curso" >
-                        <option disabled selected>Selecciona el curso</option>
+                    <select class="form-control form-control-user" name="curso_id" id="curso" required>
+                        <option value="" disabled selected>Selecciona el curso</option>
 
                         {{#each listCursos}}
                            <option value="{{id}}">{{nombre}}</option>
@@ -79,7 +79,7 @@
     </div>
 
     {{else}}
-          <h3 class="mt-5 text-center">En este momento no se puede enviar correos, ya que no hay cursos disponibles</h3>
+          <h3 class="mt-5 text-center">{{mensaje}}</h3>
 
     {{/if}}
 

@@ -1,0 +1,73 @@
+{{>header}}
+
+
+  <div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg mt-3">
+      <div class="card-body p-0 ">
+        <!-- Nested Row within Card Body -->
+        <div class="row justify-content-center">
+          
+
+          {{#if flagperfil}}
+            <h3 class="mt-5 text-center">Su perfil fue actualizado</h3>
+          {{else}}
+            <div class="col-lg-7">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Perfil</h1>
+                  <h4 class="h6 text-gray-900 mb-4">A continuación puede actualizar su información de perfil</h4>
+                </div>
+                <form action="/perfil" method="POST" enctype='multipart/form-data' >
+                  {{#each infoUsuario}}
+                    <div class="form-group row">
+                      <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="number" min="1" class="form-control form-control-user" id="documento" name='documento' placeholder="{{documento}}" readonly>
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="text" class="form-control form-control-user" id="nombre" name="nombre" placeholder="{{nombre}}" readonly>
+                      </div>                  
+                    </div> 
+
+                    <div class="form-group row">
+                      <div class="col-sm-6 mb-3 mb-sm-0">
+                        <input type="email" class="form-control form-control-user" id="correo" name="correo" placeholder="{{correo}}" value="{{correo}}" required>
+                      </div> 
+                      <div class="col-sm-6">
+                        <input type="tel" class="form-control form-control-user" id="telefono" name="telefono" placeholder="{{telefono}}" value="{{telefono}}" required>
+                      </div>                  
+                    </div>
+                  {{/each}}
+                  <div class="form-group row">
+                    {{#if foto_perfil}}
+                      <img class="fotoperfil" src="data:img/{{extensionfoto}};base64,{{foto_perfil}}" alt="Foto perfil">
+                    {{/if}}
+                    <div class="col-sm-12 mb-6 mb-sm-0">
+                      <label>Foto de perfil</label>
+                      <input type="file" class="form-control form-control-user" id="archivo" name="archivo" accept="image/*">
+                    </div> 
+                  </div> 
+
+                  <button class="btn btn-primary btn-user btn-block">
+                    Enviar
+                  </button>
+                  <hr>
+                
+                </form>
+              
+                
+              </div>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+{{>footer}}
+

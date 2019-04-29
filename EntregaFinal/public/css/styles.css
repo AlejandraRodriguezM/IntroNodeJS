@@ -38,3 +38,9 @@ input[type="number"] {
     margin: auto;
     display: block;
 }
+
+.fotoperfil{
+    height: 40vh;
+    width: 40hv;
+    margin:auto
+}

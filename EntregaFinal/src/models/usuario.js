@@ -37,8 +37,13 @@ const usuarioSchema = new Schema({
         required : true,
         trim : true			
 	},
-	// ,
-    // cursos: [{ type: Schema.Types.ObjectId, ref: 'Curso' }]
+	 
+    fotoperfil:{
+		type:Buffer
+	},
+	extensionfoto:{
+		type: String
+	}
 });
 
 usuarioSchema.plugin(uniqueValidator);
